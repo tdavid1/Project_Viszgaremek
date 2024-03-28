@@ -23,12 +23,17 @@ import android.widget.Toast;
 import com.google.android.material.navigation.NavigationBarItemView;
 import com.google.android.material.navigation.NavigationView;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private Button login_button;
-    private EditText login_email;
-    private EditText login_password;
     private DrawerLayout drawerLayout;
-    private LoginFragment login_fragment;
+    private Retrofit retrofit;
+    private Products[] products;
+    private RetrofitInterface retrofitInterface;
     private String baseUrl = "http://192.168.56.1:3000";
     private LoginResult result;
     @Override
@@ -37,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         init();
-        // Fragment Létrehozása
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -49,7 +53,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-        //Login Fragemnet Login Gomb használata
+
+        Call<Products[]> call = retrofitInterface.executeGetall();
+        call.enqueue(new Callback<Products[]>() {
+            @Override
+            public void onResponse(Call<Products[]> call, Response<Products[]> response) {
+                if(response.code()==201){
+                    products = response.body();
+                }
+                else if(response.code()==400){
+                    Toast.makeText(MainActivity.this, "Hiba a lekérés alatt", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<Products[]> call, Throwable t) {
+                Toast.makeText(MainActivity.this, t.getMessage() , Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -86,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
     public void init(){
-        login_fragment = new LoginFragment();
+        retrofit = new Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create()).build();
+        retrofitInterface = retrofit.create(RetrofitInterface.class);
     }
 }

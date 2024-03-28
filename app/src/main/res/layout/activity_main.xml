@@ -40,6 +40,12 @@
             android:hint="Keresés"
             android:textSize="30dp"
             />
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/listview_main"
+            tools:listitem="@layout/list_adapter"
+            />
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
