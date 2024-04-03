@@ -3,14 +3,17 @@ package com.example.project_kozos;
 import com.google.gson.annotations.SerializedName;
 
 public class LoginResult {
-    private String name;
-    private String email;
+    @SerializedName("accessToken")
+    private String accessToken;
 
-    public String getName() {
-        return name;
+    @SerializedName("errorMessage")
+    private String errorMessage;
+
+    public String getAccessToken() {
+        return accessToken;
     }
 
-    public String getEmail() {
-        return email;
+    public String getErrorMessage() {
+        return errorMessage;
     }
 }

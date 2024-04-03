@@ -1,27 +1,30 @@
 package com.example.project_kozos;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.content.ClipData;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.content.Intent;
-import android.widget.Button;
-import android.widget.EditText;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.navigation.NavigationBarItemView;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,10 +35,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawerLayout;
     private Retrofit retrofit;
-    private Products[] products;
+    private List<Product> products = new ArrayList<>();
     private RetrofitInterface retrofitInterface;
+    private TextView hibajelentes;
+    private List<ProductPictures> productPictures = new ArrayList<>();
     private String baseUrl = "http://192.168.56.1:3000";
     private LoginResult result;
+    private ListView listView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,23 +60,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        Call<Products[]> call = retrofitInterface.executeGetall();
-        call.enqueue(new Callback<Products[]>() {
+        Call<List<Product>> call = retrofitInterface.executeGetall();
+        call.enqueue(new Callback<List<Product>>() {
             @Override
-            public void onResponse(Call<Products[]> call, Response<Products[]> response) {
-                if(response.code()==201){
+            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+                if (response.isSuccessful()) {
                     products = response.body();
-                }
-                else if(response.code()==400){
-                    Toast.makeText(MainActivity.this, "Hiba a lekérés alatt", Toast.LENGTH_SHORT).show();
+                    if (products != null && !products.isEmpty()) {
+                        for (Product product : products) {
+                            listView.setAdapter(new ProductsAdapter());
+                            Log.d("Product", product.getProduct_name());
+                            productPictures = product.getProductPictures();
+                            if (productPictures != null && !productPictures.isEmpty()) {
+                                for (ProductPictures picture : productPictures) {
+                                    Log.d("Product Picture", picture.getImage());
+                                }
+                            }
+                        }
+                    } else {
+                        Log.e("Error", "No products found");
+                    }
+                } else {
+                    Log.e("Error", "Failed to fetch products: " + response.message());
                 }
             }
+
             @Override
-            public void onFailure(Call<Products[]> call, Throwable t) {
-                Toast.makeText(MainActivity.this, t.getMessage() , Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<List<Product>> call, Throwable t) {
+                Log.e("Error", "Failed to fetch products: " + t.getMessage());
             }
         });
-
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -106,8 +125,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
         }
     }
+    private class ProductsAdapter extends ArrayAdapter<Product> {
+        public ProductsAdapter(){
+            super(MainActivity.this,R.layout.list_adapter,products);
+        }
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            LayoutInflater inflater = getLayoutInflater();
+            View view = inflater.inflate(R.layout.list_adapter,null);
+            Product prod = products.get(position);
+            TextView name = view.findViewById(R.id.Name);
+            TextView price = view.findViewById(R.id.Price);
+            TextView new_view = view.findViewById(R.id.make_view);
+            TextView basket = view.findViewById(R.id.basket);
+
+            name.setText(prod.getProduct_name());
+            //hibajelentes.setText(String.valueOf(actualPerson.getProduct_name()));
+            price.setText(String.valueOf(prod.getPrice()));
+            return view;
+        }
+    }
     public void init(){
+        hibajelentes = findViewById(R.id.problem_message);
         retrofit = new Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create()).build();
         retrofitInterface = retrofit.create(RetrofitInterface.class);
+        listView = findViewById(R.id.listview_main);
     }
 }

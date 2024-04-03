@@ -103,11 +103,17 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
         call.enqueue(new Callback<LoginResult>() {
             @Override
             public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
-                if(response.code()==201){
+                if(response.isSuccessful()) {
                     LoginResult result = response.body();
-                }
-                else if(response.code()==400){
-                    login_message.setText("Hibás bejelentkezési adatok");
+                    if (result != null && result.getAccessToken() != null) {
+                        String accessToken = result.getAccessToken();
+                    } else {
+                        login_message.setText("Invalid response from server");
+                    }
+                } else if(response.code() == 400) {
+                    login_message.setText("Invalid email or password");
+                } else {
+                    login_message.setText("Unexpected error: " + response.message());
                 }
             }
             @Override

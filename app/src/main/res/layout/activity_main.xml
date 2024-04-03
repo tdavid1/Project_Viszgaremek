@@ -40,6 +40,12 @@
             android:hint="Keresés"
             android:textSize="30dp"
             />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:id="@+id/problem_message"
+            android:textColor="@color/red"/>
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"

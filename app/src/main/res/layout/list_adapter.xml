@@ -6,7 +6,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/kosar"
+        android:id="@+id/basket"
         android:text="Kosárbahelyezés"
         android:textSize="20sp"
         android:layout_marginEnd="10dp"/>
@@ -16,21 +16,21 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/megtekintes"
+        android:id="@+id/make_view"
         android:text="Megtakintés"
         android:textSize="20sp"
         android:layout_marginEnd="10dp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/Nev"
+        android:id="@+id/Name"
         android:text="Alma"
         android:textSize="20sp"
         android:layout_marginEnd="10dp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/Jegy"
+        android:id="@+id/Price"
         android:text="1000"
         android:textSize="20sp" />
 </LinearLayout>
