@@ -1,16 +1,17 @@
 package com.example.project_kozos;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Product {
+public class Product implements Serializable {
     private int product_id;
     private String product_name;
     private String product_type;
     private String product_spectype;
     private int price;
     private String description;
-    private List<ProductPictures> productPictures = new ArrayList<>();
+    private List<ProductPictures> ProductPictures = new ArrayList<>();
 
     public Product(int productId, String productName, String productType, String productSpectype, int price, String description, List<ProductPictures> productPictures) {
         product_id = productId;
@@ -19,7 +20,7 @@ public class Product {
         product_spectype = productSpectype;
         this.price = price;
         this.description = description;
-        this.productPictures = productPictures;
+        this.ProductPictures = productPictures;
     }
 
     public int getProduct_id() {
@@ -45,6 +46,6 @@ public class Product {
     public String getDescription() {
         return description;
     }
-    public List<ProductPictures> getProductPictures() {return productPictures;}
+    public List<ProductPictures> getProductPictures() {return ProductPictures;}
 
 }

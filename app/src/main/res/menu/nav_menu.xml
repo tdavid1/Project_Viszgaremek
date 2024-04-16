@@ -4,24 +4,28 @@
     tools:showIn = "navigation_view">
 
     <group
-        android:checkableBehavior="single">
+        android:checkableBehavior="single"
+        android:id="@+id/navigation_view">
         <item
+            android:icon="@drawable/home"
             android:id="@+id/nav_home"
             android:title="Fő oldal"/>
         <item
-            android:id="@+id/nav_profile"
-            android:title="Profil"/>
-        <item
+            android:icon="@drawable/basket_icon"
             android:id="@+id/nav_basket"
             android:title="Kosár"/>
         <item
+            android:icon="@drawable/register"
             android:id="@+id/nav_register"
             android:title="Regisztráció"/>
         <item
+            android:icon="@drawable/login_icon"
             android:id="@+id/nav_login"
             android:title="Belépés"/>
         <item
+            android:icon="@drawable/logout"
             android:id="@+id/nav_logout"
-            android:title="Kijelenkezés"/>
+            android:title="Kijelenkezés"
+            />
     </group>
 </menu>

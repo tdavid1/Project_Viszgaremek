@@ -1,17 +1,19 @@
 package com.example.project_kozos;
 
-public class ProductPictures {
+import java.io.Serializable;
+
+public class ProductPictures implements Serializable {
     private int id;
     private String image;
-    private int productid;
+    private int productId;
 
     public ProductPictures(int id, String image, int productid) {
         this.id = id;
         this.image = image;
-        this.productid = productid;
+        this.productId = productid;
     }
 
     public int getId(){ return id;}
     public String getImage(){ return image;}
-    public int getProductid(){ return productid;}
+    public int getProductid(){ return productId;}
 }

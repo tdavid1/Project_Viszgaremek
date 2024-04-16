@@ -10,7 +10,6 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start"
     >
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -30,6 +29,8 @@
             android:layout_height="wrap_content"
             android:hint="Kereset Termék Neve"
             android:textSize="30dp"
+            android:textColorHint="@color/blue"
+            android:textColor="@color/blue"
             android:id="@+id/Kereseset_eszkoz_editext"
             />
         <Button
@@ -37,6 +38,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/Kereses_button"
             android:layout_gravity="center"
+            android:textColorHint="@color/black"
             android:hint="Keresés"
             android:textSize="30dp"
             />
@@ -46,14 +48,16 @@
             android:textSize="30dp"
             android:id="@+id/problem_message"
             android:textColor="@color/red"/>
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/listview_main"
-            tools:listitem="@layout/list_adapter"
-            />
-    </LinearLayout>
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/listview_main"
+                tools:listitem="@layout/list_adapter"
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbars="vertical"
+                />
 
+    </LinearLayout>
     <com.google.android.material.navigation.NavigationView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -61,7 +65,7 @@
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/nav_menu"
-        app:itemIconTint="@color/blue"
+        app:itemIconTint="@color/black"
         app:itemTextColor="@color/blue"
         />
 </androidx.drawerlayout.widget.DrawerLayout>

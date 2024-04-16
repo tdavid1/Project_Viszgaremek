@@ -9,6 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -107,6 +108,23 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
                     LoginResult result = response.body();
                     if (result != null && result.getAccessToken() != null) {
                         String accessToken = result.getAccessToken();
+
+                        AccessTokenManager accessTokenManager = new AccessTokenManager(LoginActivity.this);
+                        accessTokenManager.saveAccessToken(accessToken);
+
+                        //setContentView(R.layout.activity_login);
+                        //NavigationView navigationView = findViewById(R.id.navigation_view);
+                        //Menu menu = navigationView.getMenu();
+                        //MenuItem loginMenuItem = menu.findItem(R.id.nav_login);
+                        //loginMenuItem.setVisible(false);
+                        //loginMenuItem.setEnabled(false);
+                        //MenuItem regMenuItem = menu.findItem(R.id.nav_register);
+                        //regMenuItem.setVisible(false);
+                        //regMenuItem.setEnabled(false);
+
+                        Intent intent = new Intent(LoginActivity.this , MainActivity.class);
+                        startActivity(intent);
+                        finish();
                     } else {
                         login_message.setText("Invalid response from server");
                     }

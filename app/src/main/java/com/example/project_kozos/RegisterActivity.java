@@ -67,7 +67,6 @@ public class RegisterActivity extends AppCompatActivity implements NavigationVie
             finish();
         }
         else if(item.getItemId()==R.id.nav_login){
-            //getSupportFragmentManager().beginTransaction().replace(R.id.frame_Container, login_fragment).commit();
             Intent intent = new Intent(RegisterActivity.this , LoginActivity.class);
             startActivity(intent);
             finish();
