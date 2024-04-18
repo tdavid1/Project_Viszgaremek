@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -45,5 +46,5 @@ public interface RetrofitInterface {
     Call<Void> executeDeleteItem(@Header("Authorization") String accessToken,@Body HashMap<String, Integer> map);
 
     @POST("/api/order/new")
-    Call<Void> executeOrder(@Header("Authorization") String accessToken,@Body HashMap<String, String > map);
+    Call<Void> executeOrder(@Header("Authorization") String accessToken,@Body HashMap<String, Object> map);
 }

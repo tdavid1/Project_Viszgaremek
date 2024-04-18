@@ -35,7 +35,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ProductBasketActivity extends AppCompatActivity {
     private TextView basket_total_price;
     private TextView basket_number;
-    private String baseUrl = "http://192.168.56.1:3000";
+    private Button order;
     private ListView basket_list;
     private Retrofit retrofit;
     private List<BasketProduct> products = new ArrayList<>();
@@ -46,6 +46,14 @@ public class ProductBasketActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product_basket);
         init();
         GetAll();
+        order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProductBasketActivity.this , VerificationActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
     public void GetAll(){
         products.clear();
@@ -208,7 +216,12 @@ public class ProductBasketActivity extends AppCompatActivity {
     public void init(){
         basket_number = findViewById(R.id.basket_total_price);
         basket_total_price = findViewById(R.id.basket_total_price);
+        order = findViewById(R.id.order);
         basket_list = findViewById(R.id.listview_basket);
+        String baseUrl = NetworkConnection.getBackendUrl();
+        if (baseUrl == null) {
+            baseUrl = "http://fallbackurl.com";
+        }
         retrofit = new Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create()).build();
         retrofitInterface = retrofit.create(RetrofitInterface.class);
     }

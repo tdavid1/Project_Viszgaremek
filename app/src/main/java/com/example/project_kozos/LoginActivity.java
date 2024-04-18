@@ -35,7 +35,6 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
     private RetrofitInterface retrofitInterface;
     private TextView login_message;
     private DrawerLayout drawerLayout;
-    private String baseUrl = "http://192.168.56.1:3000";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +89,10 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
         login_email = findViewById(R.id.login_email);
         button = findViewById(R.id.login_button);
         login_password= findViewById(R.id.login_password);
+        String baseUrl = NetworkConnection.getBackendUrl();
+        if (baseUrl == null) {
+            baseUrl = "http://fallbackurl.com";
+        }
         retrofit = new Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create()).build();
         retrofitInterface = retrofit.create(RetrofitInterface.class);
         login_message = findViewById(R.id.login_problem_message);

@@ -32,7 +32,6 @@ public class RegisterActivity extends AppCompatActivity implements NavigationVie
     private Button signupButton;
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
-    private String baseUrl = "http://192.168.56.1:3000";
     private TextView signup_message;
     private DrawerLayout drawerLayout;
     @Override
@@ -115,6 +114,10 @@ public class RegisterActivity extends AppCompatActivity implements NavigationVie
         signup_email = findViewById(R.id.user_email);
         signup_name = findViewById(R.id.user_name);
         signup_password=findViewById(R.id.password);
+        String baseUrl = NetworkConnection.getBackendUrl();
+        if (baseUrl == null) {
+            baseUrl = "http://fallbackurl.com";
+        }
         retrofit = new Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create()).build();
         retrofitInterface = retrofit.create(RetrofitInterface.class);
         signup_message = findViewById(R.id.signup_problem_message);

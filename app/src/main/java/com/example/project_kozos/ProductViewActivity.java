@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -36,7 +37,6 @@ public class ProductViewActivity extends AppCompatActivity {
     private ImageView add_basket;
     private TextView product_price;
     private ProductinBasket productinBasket;
-    private String baseUrl = "http://192.168.56.1:3000";
     private TextView product_description;
     private Product product;
     private Retrofit retrofit;
@@ -137,6 +137,10 @@ public class ProductViewActivity extends AppCompatActivity {
     public void init(){
         product_name = findViewById(R.id.product_name);
         Left_arrow = findViewById(R.id.Left_arrow);
+        String baseUrl = NetworkConnection.getBackendUrl();
+        if (baseUrl == null) {
+            baseUrl = "http://fallbackurl.com";
+        }
         retrofit = new Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create()).build();
         retrofitInterface = retrofit.create(RetrofitInterface.class);
         Right_arrow = findViewById(R.id.Right_arrow);
@@ -148,6 +152,7 @@ public class ProductViewActivity extends AppCompatActivity {
         add_basket = findViewById(R.id.add_basket);
         product_price = findViewById(R.id.product_price);
         product_description = findViewById(R.id.product_description);
+        product_description.setMovementMethod(new ScrollingMovementMethod());
         number =findViewById(R.id.product_number);
         productinBasket = new ProductinBasket(product,0);
         fill();

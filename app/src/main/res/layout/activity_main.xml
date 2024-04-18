@@ -31,8 +31,10 @@
             android:textSize="30dp"
             android:textColorHint="@color/blue"
             android:textColor="@color/blue"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:id="@+id/Kereseset_eszkoz_editext"
             />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,28 +44,23 @@
             android:hint="Keresés"
             android:textSize="30dp"
             />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="30dp"
-            android:id="@+id/problem_message"
-            android:textColor="@color/red"/>
             <ListView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/listview_main"
+                android:divider="@null"
                 tools:listitem="@layout/list_adapter"
-                android:scrollbarStyle="outsideOverlay"
-                android:scrollbars="vertical"
                 />
 
     </LinearLayout>
+
     <com.google.android.material.navigation.NavigationView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/nav_view"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
+        android:visibility="gone"
         app:menu="@menu/nav_menu"
         app:itemIconTint="@color/black"
         app:itemTextColor="@color/blue"
