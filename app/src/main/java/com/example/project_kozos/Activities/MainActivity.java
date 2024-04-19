@@ -1,14 +1,9 @@
 package com.example.project_kozos.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -21,6 +16,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.project_kozos.AccessTokenManager;
 import com.example.project_kozos.Dtos.Product;
@@ -46,47 +48,64 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawerLayout;
     private List<Product> products = new ArrayList<>();
     private RetrofitInterface retrofitInterface;
-    private Button Search;
+    private Button searchButton;
     private EditText searchEditText;
     private ListView listView;
     private final List<ProductinBasket> productInBasketList = new ArrayList<>();
+    private ArrayAdapter<Product> productsAdapter;
+
+    private final TextWatcher searchTextChangedListener = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            String searchText = s.toString();
+            if (searchText.isEmpty()) {
+                getAllProducts();
+            } else {
+                searchProducts(searchText);
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-        GetAll();
-
-        Search.setOnClickListener(v -> {
-            if(searchEditText.toString().isEmpty()){
-                GetAll();
+        getAllProducts();
+        searchButton.setOnClickListener(v -> {
+            if (searchEditText.getText().toString().isEmpty()) {
+                getAllProducts();
             } else {
-                Search_Result();
+                searchProducts(searchEditText.getText().toString());
             }
         });
+        searchEditText.addTextChangedListener(searchTextChangedListener);
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         AccessTokenManager accessTokenManager = new AccessTokenManager(MainActivity.this);
-        if(item.getItemId()==R.id.nav_basket){
+        if (item.getItemId() == R.id.nav_basket) {
             Intent intent = new Intent(MainActivity.this , ProductBasketActivity.class);
             ProductinBasket[] productArray = productInBasketList.toArray(new ProductinBasket[0]);
             intent.putExtra("productfrommaintobasket",productArray);
             startActivity(intent);
             finish();
-        }
-        else if(item.getItemId()==R.id.nav_login){
+        } else if (item.getItemId() == R.id.nav_login) {
             Intent intent = new Intent(MainActivity.this , LoginActivity.class);
             startActivity(intent);
             finish();
-        }
-        else if(item.getItemId()==R.id.nav_register){
+        } else if (item.getItemId() == R.id.nav_register) {
             Intent intent = new Intent(MainActivity.this , RegisterActivity.class);
             startActivity(intent);
             finish();
-        } else if (item.getItemId()==R.id.nav_logout) {
+        } else if (item.getItemId() == R.id.nav_logout) {
             accessTokenManager.clearAccessToken();
         }
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -95,9 +114,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        }else{
+        } else {
             super.onBackPressed();
         }
     }
@@ -118,14 +137,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             TextView name = view.findViewById(R.id.Name);
             TextView price = view.findViewById(R.id.Price);
-            Button new_view = view.findViewById(R.id.viewProductButton);
+            Button viewButton = view.findViewById(R.id.viewProductButton);
             ImageView basket = view.findViewById(R.id.addToCartButton);
-            ImageView productimg = view.findViewById(R.id.image_products);
+            ImageView productImg = view.findViewById(R.id.image_products);
 
             if (productList != null && position < productList.size()) {
                 final Product prod = productList.get(position);
 
-                new_view.setOnClickListener(v -> {
+                viewButton.setOnClickListener(v -> {
                     Intent intent = new Intent(getContext(), ProductViewActivity.class);
                     intent.putExtra("product_in_detailed", prod);
                     getContext().startActivity(intent);
@@ -139,14 +158,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     HashMap<String, HashMap<String, Integer>> requestData = new HashMap<>();
                     requestData.put("data", map);
-                    Call<Void> call = retrofitInterface.executeAddCart("Bearer "+accessTokenManager.getAccessToken(), map);
+                    Call<Void> call = retrofitInterface.executeAddCart("Bearer " + accessTokenManager.getAccessToken(), map);
                     call.enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                            if(response.code()==201){
+                            if (response.code() == 201) {
                                 Toast.makeText(MainActivity.this, "Sikeresen hozzáadta a terméket a kosárhoz", Toast.LENGTH_SHORT).show();
-                            }
-                            else {
+                            } else {
                                 if (accessTokenManager.getAccessToken() == null) {
                                     Toast.makeText(MainActivity.this, "A kosárba helyezéshez be kell jelentkezned!", Toast.LENGTH_SHORT).show();
                                 } else {
@@ -154,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 }
                             }
                         }
+
                         @Override
                         public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                             Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
@@ -175,17 +194,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             .placeholder(R.drawable.loading)
                             .error(R.drawable.loading)
                             .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE) // Disable cache
-                            .into(productimg);
+                            .into(productImg);
                 } else {
                     // Handle case when there's no image available
-                    productimg.setImageResource(R.drawable.loading);
+                    productImg.setImageResource(R.drawable.loading);
                 }
             }
             return view;
         }
     }
 
-    public void GetAll(){
+    public void getAllProducts() {
         products.clear();
         Call<List<Product>> call = retrofitInterface.executeGetall();
         call.enqueue(new Callback<List<Product>>() {
@@ -194,7 +213,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (response.isSuccessful()) {
                     products = response.body();
                     if (products != null && !products.isEmpty()) {
-                        listView.setAdapter(new ProductsAdapter(products));
+                        productsAdapter = new ProductsAdapter(products);
+                        listView.setAdapter(productsAdapter);
                     } else {
                         Log.e("Error", "No products found");
                     }
@@ -210,17 +230,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    public void Search_Result(){
+    public void searchProducts(String searchText) {
         products.clear();
-        String Helper = searchEditText.getText().toString();
-        Call<List<Product>> call = retrofitInterface.executeSearchResault(Helper);
+        Call<List<Product>> call = retrofitInterface.executeSearchResault(searchText);
         call.enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(@NonNull Call<List<Product>> call, @NonNull Response<List<Product>> response) {
                 if (response.isSuccessful()) {
                     products = response.body();
                     if (products != null && !products.isEmpty()) {
-                        listView.setAdapter(new ProductsAdapter(products));
+                        productsAdapter = new ProductsAdapter(products);
+                        listView.setAdapter(productsAdapter);
                     } else {
                         Log.e("Error", "No products found");
                     }
@@ -236,16 +256,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    public void navbarstart(){
+    public void navbarstart() {
         AccessTokenManager accessTokenManager = new AccessTokenManager(MainActivity.this);
-
     }
 
-    public void init(){
+    public void init() {
         Retrofit retrofit = RetrofitClient.getClient();
         retrofitInterface = retrofit.create(RetrofitInterface.class);
         listView = findViewById(R.id.listview_main);
-        Search = findViewById(R.id.Kereses_button);
         searchEditText = findViewById(R.id.Kereseset_eszkoz_editext);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -254,8 +272,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        // Remove the ActionBarDrawerToggle initialization
 
         navbarstart();
     }

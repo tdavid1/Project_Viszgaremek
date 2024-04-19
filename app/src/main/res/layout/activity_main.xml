@@ -27,30 +27,21 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Kereset Termék Neve"
-            android:textSize="30dp"
+            android:hint="Keresés"
+            android:textSize="30sp"
             android:textColorHint="@color/blue"
             android:textColor="@color/blue"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:id="@+id/Kereseset_eszkoz_editext"
             />
 
-        <Button
-            android:layout_width="wrap_content"
+        <ListView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/Kereses_button"
-            android:layout_gravity="center"
-            android:textColorHint="@color/black"
-            android:hint="Keresés"
-            android:textSize="30dp"
+            android:id="@+id/listview_main"
+            android:divider="@null"
+            tools:listitem="@layout/list_adapter"
             />
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/listview_main"
-                android:divider="@null"
-                tools:listitem="@layout/list_adapter"
-                />
 
     </LinearLayout>
 
@@ -60,9 +51,8 @@
         android:id="@+id/nav_view"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
-        android:visibility="gone"
         app:menu="@menu/nav_menu"
-        app:itemIconTint="@color/black"
+        app:itemIconTint="@color/blue"
         app:itemTextColor="@color/blue"
         />
 </androidx.drawerlayout.widget.DrawerLayout>
