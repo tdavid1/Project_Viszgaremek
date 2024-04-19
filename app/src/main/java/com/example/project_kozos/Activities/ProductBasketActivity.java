@@ -44,13 +44,10 @@ public class ProductBasketActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product_basket);
         init();
         GetAll();
-        order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ProductBasketActivity.this , VerificationActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        order.setOnClickListener(v -> {
+            Intent intent = new Intent(ProductBasketActivity.this , VerificationActivity.class);
+            startActivity(intent);
+            finish();
         });
     }
     public void GetAll(){
@@ -121,88 +118,79 @@ public class ProductBasketActivity extends AppCompatActivity {
             ImageButton trash = view.findViewById(R.id.basket_trash);
             if (productList != null && position < productList.size()) {
                 final BasketProduct prod = productList.get(position);
-                plus.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        HashMap<String, Integer> map = new HashMap<>();
-                        map.put("productId", prod.getProduct().getProduct_id());
-                        map.put("quantity", 1);
-                        AccessTokenManager accessTokenManager = new AccessTokenManager(ProductBasketActivity.this);
+                plus.setOnClickListener(v -> {
+                    HashMap<String, Integer> map = new HashMap<>();
+                    map.put("productId", prod.getProduct().getProduct_id());
+                    map.put("quantity", 1);
+                    AccessTokenManager accessTokenManager = new AccessTokenManager(ProductBasketActivity.this);
 
-                        HashMap<String, HashMap<String, Integer>> requestData = new HashMap<>();
-                        requestData.put("data", map);
-                        Call<Void> call = retrofitInterface.executeAddCart("Bearer "+accessTokenManager.getAccessToken(), map);
-                        call.enqueue(new Callback<Void>() {
-                            @Override
-                            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                                if(response.code()==201){
-                                    GetAll();
-                                    Toast.makeText(ProductBasketActivity.this, "Sikeresen hozzáadta a terméket a kosárhoz", Toast.LENGTH_SHORT).show();
-                                }
-                                else {
-                                    Toast.makeText(ProductBasketActivity.this, String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
-                                }
+                    HashMap<String, HashMap<String, Integer>> requestData = new HashMap<>();
+                    requestData.put("data", map);
+                    Call<Void> call = retrofitInterface.executeAddCart("Bearer "+accessTokenManager.getAccessToken(), map);
+                    call.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                            if(response.code()==201){
+                                GetAll();
+                                Toast.makeText(ProductBasketActivity.this, "Sikeresen hozzáadta a terméket a kosárhoz", Toast.LENGTH_SHORT).show();
                             }
-                            @Override
-                            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                                Toast.makeText(ProductBasketActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                            else {
+                                Toast.makeText(ProductBasketActivity.this, String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                             }
-                        });
-                    }
+                        }
+                        @Override
+                        public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                            Toast.makeText(ProductBasketActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 });
-                minusz.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        HashMap<String, Integer> map = new HashMap<>();
-                        map.put("productId", prod.getProduct().getProduct_id());
-                        map.put("quantity", 1);
-                        AccessTokenManager accessTokenManager = new AccessTokenManager(ProductBasketActivity.this);
+                minusz.setOnClickListener(v -> {
+                    HashMap<String, Integer> map = new HashMap<>();
+                    map.put("productId", prod.getProduct().getProduct_id());
+                    map.put("quantity", 1);
+                    AccessTokenManager accessTokenManager = new AccessTokenManager(ProductBasketActivity.this);
 
-                        HashMap<String, HashMap<String, Integer>> requestData = new HashMap<>();
-                        requestData.put("data", map);
-                        Call<Void> call = retrofitInterface.executeRemoveCart("Bearer "+accessTokenManager.getAccessToken(), map);
-                        call.enqueue(new Callback<Void>() {
-                            @Override
-                            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                                if(response.code()==201){
-                                    GetAll();
-                                    Toast.makeText(ProductBasketActivity.this, "Sikeresen Kivonta a terméket a kosárhoz", Toast.LENGTH_SHORT).show();
-                                }
-                                else {
-                                    Toast.makeText(ProductBasketActivity.this, String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
-                                }
+                    HashMap<String, HashMap<String, Integer>> requestData = new HashMap<>();
+                    requestData.put("data", map);
+                    Call<Void> call = retrofitInterface.executeRemoveCart("Bearer "+accessTokenManager.getAccessToken(), map);
+                    call.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                            if(response.code()==201){
+                                GetAll();
+                                Toast.makeText(ProductBasketActivity.this, "Sikeresen Kivonta a terméket a kosárhoz", Toast.LENGTH_SHORT).show();
                             }
-                            @Override
-                            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                                Toast.makeText(ProductBasketActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                            else {
+                                Toast.makeText(ProductBasketActivity.this, String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                             }
-                        });
-                    }
+                        }
+                        @Override
+                        public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                            Toast.makeText(ProductBasketActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 });
-                trash.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        HashMap<String, Integer> map = new HashMap<>();
-                        map.put("productId", prod.getProduct().getProduct_id());
-                        AccessTokenManager accessTokenManager = new AccessTokenManager(ProductBasketActivity.this);
-                        Call<Void> call = retrofitInterface.executeDeleteItem("Bearer "+accessTokenManager.getAccessToken(), map);
-                        call.enqueue(new Callback<Void>() {
-                            @Override
-                            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                                if(response.code()==201){
-                                    GetAll();
-                                    Toast.makeText(ProductBasketActivity.this, "Sikeresen Terméket a terméket a kosárból", Toast.LENGTH_SHORT).show();
-                                }
-                                else {
-                                    Toast.makeText(ProductBasketActivity.this, String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
-                                }
+                trash.setOnClickListener(v -> {
+                    HashMap<String, Integer> map = new HashMap<>();
+                    map.put("productId", prod.getProduct().getProduct_id());
+                    AccessTokenManager accessTokenManager = new AccessTokenManager(ProductBasketActivity.this);
+                    Call<Void> call = retrofitInterface.executeDeleteItem("Bearer "+accessTokenManager.getAccessToken(), map);
+                    call.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                            if(response.code()==201){
+                                GetAll();
+                                Toast.makeText(ProductBasketActivity.this, "Sikeresen Terméket a terméket a kosárból", Toast.LENGTH_SHORT).show();
                             }
-                            @Override
-                            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                                Toast.makeText(ProductBasketActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                            else {
+                                Toast.makeText(ProductBasketActivity.this, String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                             }
-                        });
-                    }
+                        }
+                        @Override
+                        public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                            Toast.makeText(ProductBasketActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 });
                 name.setText(prod.getProduct().getProduct_name());
                 price.setText(prod.getProduct().getPrice() +" Ft");
@@ -212,7 +200,6 @@ public class ProductBasketActivity extends AppCompatActivity {
         }
     }
     public void init(){
-        TextView basket_number = findViewById(R.id.basket_total_price);
         basket_total_price = findViewById(R.id.basket_total_price);
         order = findViewById(R.id.order);
         basket_list = findViewById(R.id.listview_basket);

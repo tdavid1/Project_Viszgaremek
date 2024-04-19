@@ -10,7 +10,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -56,12 +55,7 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleLoginDialogue();
-            }
-        });
+        button.setOnClickListener(v -> handleLoginDialogue());
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -112,17 +106,6 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
 
                         AccessTokenManager accessTokenManager = new AccessTokenManager(LoginActivity.this);
                         accessTokenManager.saveAccessToken(accessToken);
-
-                        //setContentView(R.layout.activity_login);
-                        //NavigationView navigationView = findViewById(R.id.navigation_view);
-                        //Menu menu = navigationView.getMenu();
-                        //MenuItem loginMenuItem = menu.findItem(R.id.nav_login);
-                        //loginMenuItem.setVisible(false);
-                        //loginMenuItem.setEnabled(false);
-                        //MenuItem regMenuItem = menu.findItem(R.id.nav_register);
-                        //regMenuItem.setVisible(false);
-                        //regMenuItem.setEnabled(false);
-
                         Intent intent = new Intent(LoginActivity.this , MainActivity.class);
                         startActivity(intent);
                         finish();

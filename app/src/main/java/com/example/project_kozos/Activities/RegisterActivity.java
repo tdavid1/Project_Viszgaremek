@@ -10,7 +10,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -52,12 +51,7 @@ public class RegisterActivity extends AppCompatActivity implements NavigationVie
 
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-        signupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleSignUpDialoge();
-            }
-        });
+        signupButton.setOnClickListener(v -> handleSignUpDialoge());
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

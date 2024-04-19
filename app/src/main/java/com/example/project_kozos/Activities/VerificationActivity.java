@@ -47,31 +47,13 @@ public class VerificationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verification);
         init();
-        order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                make_order();
-            }
+        order.setOnClickListener(v -> make_order());
+        back_main.setOnClickListener(v -> {
+            linearLayout_end.setVisibility(View.GONE);
+            linearLayout_data.setVisibility(View.VISIBLE);
         });
-        back_main.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                linearLayout_end.setVisibility(View.GONE);
-                linearLayout_data.setVisibility(View.VISIBLE);
-            }
-        });
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                forwardStep();
-            }
-        });
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                backwardStep();
-            }
-        });
+        next.setOnClickListener(v -> forwardStep());
+        back.setOnClickListener(v -> backwardStep());
     }
     public void forwardStep(){
         if(!card && addressDataCheck()){
@@ -157,7 +139,7 @@ public class VerificationActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                Toast.makeText(VerificationActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();;
+                Toast.makeText(VerificationActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -175,6 +157,5 @@ public class VerificationActivity extends AppCompatActivity {
         street = findViewById(R.id.streat);
         city = findViewById(R.id.city);
         house_number = findViewById(R.id.house_number);
-        TextView order_place = findViewById(R.id.order_place);
     }
 }

@@ -58,14 +58,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         init();
         GetAll();
 
-        Search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(searchEditText.toString().isEmpty()){
-                    GetAll();
-                } else {
-                    Search_Result();
-                }
+        Search.setOnClickListener(v -> {
+            if(searchEditText.toString().isEmpty()){
+                GetAll();
+            } else {
+                Search_Result();
             }
         });
     }
@@ -75,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         AccessTokenManager accessTokenManager = new AccessTokenManager(MainActivity.this);
         if(item.getItemId()==R.id.nav_basket){
             Intent intent = new Intent(MainActivity.this , ProductBasketActivity.class);
-            ProductinBasket[] productArray = productInBasketList.toArray(new ProductinBasket[productInBasketList.size()]);
+            ProductinBasket[] productArray = productInBasketList.toArray(new ProductinBasket[0]);
             intent.putExtra("productfrommaintobasket",productArray);
             startActivity(intent);
             finish();
@@ -128,42 +125,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (productList != null && position < productList.size()) {
                 final Product prod = productList.get(position);
 
-                new_view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getContext(), ProductViewActivity.class);
-                        intent.putExtra("product_in_detailed", prod);
-                        getContext().startActivity(intent);
-                    }
+                new_view.setOnClickListener(v -> {
+                    Intent intent = new Intent(getContext(), ProductViewActivity.class);
+                    intent.putExtra("product_in_detailed", prod);
+                    getContext().startActivity(intent);
                 });
 
-                basket.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        HashMap<String, Integer> map = new HashMap<>();
-                        map.put("productId", prod.getProduct_id());
-                        map.put("quantity", 1);
-                        AccessTokenManager accessTokenManager = new AccessTokenManager(MainActivity.this);
+                basket.setOnClickListener(v -> {
+                    HashMap<String, Integer> map = new HashMap<>();
+                    map.put("productId", prod.getProduct_id());
+                    map.put("quantity", 1);
+                    AccessTokenManager accessTokenManager = new AccessTokenManager(MainActivity.this);
 
-                        HashMap<String, HashMap<String, Integer>> requestData = new HashMap<>();
-                        requestData.put("data", map);
-                        Call<Void> call = retrofitInterface.executeAddCart("Bearer "+accessTokenManager.getAccessToken(), map);
-                        call.enqueue(new Callback<Void>() {
-                            @Override
-                            public void onResponse(Call<Void> call, Response<Void> response) {
-                                if(response.code()==201){
-                                    Toast.makeText(MainActivity.this, "Sikeresen hozzáadta a terméket a kosárhoz", Toast.LENGTH_SHORT).show();
-                                }
-                                else if(response.code() != 201){
-                                    Toast.makeText(MainActivity.this, String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
+                    HashMap<String, HashMap<String, Integer>> requestData = new HashMap<>();
+                    requestData.put("data", map);
+                    Call<Void> call = retrofitInterface.executeAddCart("Bearer "+accessTokenManager.getAccessToken(), map);
+                    call.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                            if(response.code()==201){
+                                Toast.makeText(MainActivity.this, "Sikeresen hozzáadta a terméket a kosárhoz", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                if (accessTokenManager.getAccessToken() == null) {
+                                    Toast.makeText(MainActivity.this, "A kosárba helyezéshez be kell jelentkezned!", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(MainActivity.this, "A kosárhoz adás sikertelen volt, kérjük próbálja újra később!", Toast.LENGTH_SHORT).show();
                                 }
                             }
-                            @Override
-                            public void onFailure(Call<Void> call, Throwable t) {
-                                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
+                        }
+                        @Override
+                        public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                            Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 });
 
                 name.setText(prod.getProduct_name());
@@ -195,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Call<List<Product>> call = retrofitInterface.executeGetall();
         call.enqueue(new Callback<List<Product>>() {
             @Override
-            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+            public void onResponse(@NonNull Call<List<Product>> call, @NonNull Response<List<Product>> response) {
                 if (response.isSuccessful()) {
                     products = response.body();
                     if (products != null && !products.isEmpty()) {
@@ -209,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
             @Override
-            public void onFailure(Call<List<Product>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<Product>> call, @NonNull Throwable t) {
                 Log.e("Error", "Failed to fetch products: " + t.getMessage());
             }
         });
@@ -221,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Call<List<Product>> call = retrofitInterface.executeSearchResault(Helper);
         call.enqueue(new Callback<List<Product>>() {
             @Override
-            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+            public void onResponse(@NonNull Call<List<Product>> call, @NonNull Response<List<Product>> response) {
                 if (response.isSuccessful()) {
                     products = response.body();
                     if (products != null && !products.isEmpty()) {
@@ -235,7 +230,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
             @Override
-            public void onFailure(Call<List<Product>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<Product>> call, @NonNull Throwable t) {
                 Log.e("Error", "Failed to fetch products: " + t.getMessage());
             }
         });
