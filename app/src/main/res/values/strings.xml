@@ -16,6 +16,15 @@
     <string name="registerTitle">Regisztráció</string>
     <string name="username">Felhasználónév</string>
     <string name="register">Regisztráció</string>
+    <string name="image_for_product">Image for product</string>
+    <string name="product">Product</string>
+    <string name="product_price">Product Price</string>
+    <string name="login_nav">Bejelentkezés</string>
+    <string name="register_nav">Regisztráció</string>
+    <string name="main_nav">Főoldal</string>
+    <string name="cart_nav">Kosár</string>
+    <string name="profile_nav">Fiók</string>
+    <string name="logout_nav">Kijelentkezés</string>
 
 
 </resources>
