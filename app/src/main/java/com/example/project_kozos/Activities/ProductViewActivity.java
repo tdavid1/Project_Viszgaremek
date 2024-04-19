@@ -32,7 +32,7 @@ public class ProductViewActivity extends AppCompatActivity {
     private ImageButton Left_arrow;
     private ImageButton Right_arrow;
     private ImageView product_picture;
-    private ImageButton product_minus;
+    private Button product_minus;
     private ImageButton product_plus;
     private ImageView add_basket;
     private TextView product_price;
@@ -80,7 +80,7 @@ public class ProductViewActivity extends AppCompatActivity {
         });
         product_minus.setOnClickListener(v -> {
             if(0==Integer.parseInt(product_number.getText().toString())-1){
-                Toast.makeText(ProductViewActivity.this, "Minimum 1 nek kell lennie a terméknek", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProductViewActivity.this, "A minimum érték 1", Toast.LENGTH_SHORT).show();
             }
             else{
                 String help =String.valueOf(Integer.parseInt(product_number.getText().toString())-1);
@@ -138,7 +138,7 @@ public class ProductViewActivity extends AppCompatActivity {
     public void fill(){
         product_name.setText(product.getProduct_name());
         product_description.setText(product.getDescription());
-        product_price.setText(product.getPrice()+"Ft");
+        product_price.setText(product.getPrice()+" Ft");
         picture();
     }
     public void picture(){

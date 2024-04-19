@@ -42,13 +42,13 @@ public class RegisterActivity extends AppCompatActivity implements NavigationVie
 
         Toolbar toolbar = findViewById(R.id.register_toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setTitle("");
         drawerLayout = findViewById(R.id.register_drawer_layout);
+
         NavigationView navigationView = findViewById(R.id.register_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout, toolbar,R.string.open_nav,R.string.close_nav);
-
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         signupButton.setOnClickListener(v -> handleSignUpDialoge());
@@ -87,9 +87,8 @@ public class RegisterActivity extends AppCompatActivity implements NavigationVie
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                signup_message.setText("siker");
                 if(response.code()==201){
-                    signup_message.setText("Sikeres Regisztáció");
+                    signup_message.setText(R.string.successful_register);
                     signup_email.setText("");
                     signup_name.setText("");
                     signup_password.setText("");

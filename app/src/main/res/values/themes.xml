@@ -1,9 +1,25 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Project_kozos" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.Project_kozos" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.Project_kozos" parent="Base.Theme.Project_kozos" />
+    <style name="Theme.Primary.Light" parent="Base.Theme.Project_kozos">
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:statusBarColor">@color/blue</item>
+    </style>
+
+    <style name="ToolbarTitle">
+        <item name="titleEnabled">false</item>
+    </style>
+
+    <style name="TextInputDesign" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="cursorColor">@color/blue</item>
+        <item name="boxStrokeColor">@color/blue</item>
+        <item name="hintTextColor">@color/blue</item>
+    </style>
+    <style name="Theme.Primary.Dark" parent="Base.Theme.Project_kozos">
+        <item name="android:windowBackground">@color/cardview_dark_background</item>
+    </style>
 </resources>

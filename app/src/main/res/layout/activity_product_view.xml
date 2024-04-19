@@ -56,11 +56,15 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center">
-        <ImageButton
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/baseline_exposure_neg_1_24"
-            android:id="@+id/product_minus"/>
+        <Button
+            android:layout_width="65dp"
+            android:layout_height="70dp"
+            android:text="-"
+            android:textSize="30sp"
+            android:textAlignment="center"
+            android:id="@+id/product_minus"
+            app:backgroundTint="@color/blue"
+            app:cornerRadius="30dp"/>
         <TextView
             android:layout_width="30dp"
             android:layout_height="30dp"

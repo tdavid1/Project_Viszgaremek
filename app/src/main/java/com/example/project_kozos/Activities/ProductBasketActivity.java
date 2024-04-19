@@ -158,7 +158,7 @@ public class ProductBasketActivity extends AppCompatActivity {
                         public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                             if(response.code()==201){
                                 GetAll();
-                                Toast.makeText(ProductBasketActivity.this, "Sikeresen Kivonta a terméket a kosárhoz", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ProductBasketActivity.this, "Sikeres törlés", Toast.LENGTH_SHORT).show();
                             }
                             else {
                                 Toast.makeText(ProductBasketActivity.this, String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
@@ -180,7 +180,7 @@ public class ProductBasketActivity extends AppCompatActivity {
                         public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                             if(response.code()==201){
                                 GetAll();
-                                Toast.makeText(ProductBasketActivity.this, "Sikeresen Terméket a terméket a kosárból", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ProductBasketActivity.this, "Sikeresen törölte a terméket a kosárból", Toast.LENGTH_SHORT).show();
                             }
                             else {
                                 Toast.makeText(ProductBasketActivity.this, String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
@@ -193,7 +193,7 @@ public class ProductBasketActivity extends AppCompatActivity {
                     });
                 });
                 name.setText(prod.getProduct().getProduct_name());
-                price.setText(prod.getProduct().getPrice() +" Ft");
+                price.setText(prod.getProduct().getPrice() + " Ft");
                 number.setText(String.valueOf(prod.getQuantity()));
             }
             return view;

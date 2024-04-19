@@ -14,24 +14,41 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:id="@+id/toolbar"
-            android:elevation="4dp"
-            android:background="@color/blue"
-            android:theme="@style/ThemeOverlay.AppCompat.Light"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
-        <EditText
-            android:layout_width="match_parent"
+        <LinearLayout
             android:layout_height="wrap_content"
-            android:hint="Keresés"
-            android:textSize="30sp"
-            android:textColorHint="@color/blue"
-            android:textColor="@color/blue"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:id="@+id/Kereseset_eszkoz_editext"
-            />
+            android:layout_width="match_parent"
+            android:paddingBottom="10dp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:id="@+id/toolbar"
+                android:elevation="4dp"
+                style="@style/ToolbarTitle"
+                android:background="@color/white"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:labelFor="@id/Kereseset_eszkoz_editext"
+                style="@style/TextInputDesign"
+                android:textColorHint="@color/blue"
+                app:startIconDrawable="@drawable/search_icon"
+                app:placeholderText="@string/search">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:layout_marginEnd="10dp"
+                    app:placeholderText="@string/search"
+                    android:textColorHint="@color/black"
+                    android:textColor="@color/black"
+                    android:id="@+id/Kereseset_eszkoz_editext" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
 
         <ListView
             android:layout_width="match_parent"
@@ -52,5 +69,5 @@
         app:menu="@menu/nav_menu"
         app:itemIconTint="@color/blue"
         app:itemTextColor="@color/blue"
-        />
+        android:background="@color/white"/>
 </androidx.drawerlayout.widget.DrawerLayout>

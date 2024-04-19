@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
 
         Toolbar toolbar = findViewById(R.id.login_toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setTitle("");
         drawerLayout = findViewById(R.id.login_drawer_layout);
         NavigationView navigationView = findViewById(R.id.login_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -110,12 +110,12 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
                         startActivity(intent);
                         finish();
                     } else {
-                        login_message.setText("Invalid response from server");
+                        login_message.setText(R.string.invalid_credentials);
                     }
                 } else if(response.code() == 400) {
-                    login_message.setText("Invalid email or password");
+                    login_message.setText(R.string.invalid_email_or_password);
                 } else {
-                    login_message.setText("Unexpected error: " + response.message());
+                    login_message.setText(String.format("%s%s", getString(R.string.unexpected_error), response.message()));
                 }
             }
             @Override

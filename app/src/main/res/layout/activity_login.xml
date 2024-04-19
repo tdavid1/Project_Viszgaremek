@@ -16,13 +16,33 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/login_toolbar"
             android:elevation="4dp"
-            android:background="@color/blue"
-            android:theme="@style/ThemeOverlay.AppCompat.Light"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+            style="@style/ToolbarTitle"
+            android:background="@color/white"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="50dp"
+            android:theme="@style/Theme.MaterialComponents.Light"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="10dp"
+            app:cardUseCompatPadding="true">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/loginTitle"
+                android:textAlignment="center"
+                android:textSize="50sp"
+                android:textColor="@color/blue"
+                android:layout_marginTop="30dp"
+                android:fontFamily="sans-serif-light" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -30,33 +50,55 @@
             android:gravity="center"
             android:layout_height="match_parent">
 
-            <EditText
+            <com.google.android.material.textfield.TextInputLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="10dp"
+                   android:layout_marginEnd="10dp"
+                   style="@style/TextInputDesign">
+                   <com.google.android.material.textfield.TextInputEditText
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:hint="@string/email"
+                       android:textSize="30sp"
+                       android:id="@+id/login_email"/>
+               </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Email"
-                android:textSize="30sp"
-                android:id="@+id/login_email"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Jelszó"
-                android:textSize="30sp"
-                android:inputType="textPassword"
-                android:id="@+id/login_password"/>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="30sp"
-                android:text="Belépés"
-                android:id="@+id/login_button"/>
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                style="@style/TextInputDesign">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/password"
+                    android:textSize="30sp"
+                    android:id="@+id/login_password"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
                 android:id="@+id/login_problem_message"
                 android:textColor="@color/red"/>
-
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/login"
+                app:backgroundTint="@color/blue"
+                android:textColor="@color/black"
+                android:id="@+id/login_button"/>
         </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
     </LinearLayout>
 
@@ -69,5 +111,6 @@
         app:menu="@menu/nav_menu"
         app:itemIconTint="@color/blue"
         app:itemTextColor="@color/blue"
+        android:background="@color/white"
         />
 </androidx.drawerlayout.widget.DrawerLayout>
