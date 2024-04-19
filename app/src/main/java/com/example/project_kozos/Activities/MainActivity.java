@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawerLayout;
     private List<Product> products = new ArrayList<>();
     private RetrofitInterface retrofitInterface;
-    private Button searchButton;
     private EditText searchEditText;
     private ListView listView;
     private final List<ProductinBasket> productInBasketList = new ArrayList<>();
@@ -75,16 +74,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
         init();
         getAllProducts();
-        searchButton.setOnClickListener(v -> {
-            if (searchEditText.getText().toString().isEmpty()) {
-                getAllProducts();
-            } else {
-                searchProducts(searchEditText.getText().toString());
-            }
-        });
         searchEditText.addTextChangedListener(searchTextChangedListener);
     }
 
@@ -188,15 +180,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     ProductPictures productPicture = productPicturesList.get(0);
                     String imageUri = productPicture.getImage();
 
-                    // Load image with Picasso
                     Picasso.get()
                             .load(imageUri)
                             .placeholder(R.drawable.loading)
                             .error(R.drawable.loading)
-                            .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE) // Disable cache
+                            .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                             .into(productImg);
                 } else {
-                    // Handle case when there's no image available
                     productImg.setImageResource(R.drawable.loading);
                 }
             }
@@ -256,23 +246,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    public void navbarstart() {
-        AccessTokenManager accessTokenManager = new AccessTokenManager(MainActivity.this);
-    }
-
     public void init() {
         Retrofit retrofit = RetrofitClient.getClient();
         retrofitInterface = retrofit.create(RetrofitInterface.class);
         listView = findViewById(R.id.listview_main);
         searchEditText = findViewById(R.id.Kereseset_eszkoz_editext);
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        navbarstart();
+        new AccessTokenManager(MainActivity.this);
     }
 }
