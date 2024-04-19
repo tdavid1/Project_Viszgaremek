@@ -33,7 +33,7 @@ public class ProductViewActivity extends AppCompatActivity {
     private ImageButton Right_arrow;
     private ImageView product_picture;
     private Button product_minus;
-    private ImageButton product_plus;
+    private Button product_plus;
     private ImageView add_basket;
     private TextView product_price;
     private TextView product_description;
@@ -100,15 +100,10 @@ public class ProductViewActivity extends AppCompatActivity {
             call.enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                    if(response.code()==201){
-                        Toast.makeText(ProductViewActivity.this, "Sikeresen hozzáadta a terméket a kosárhoz", Toast.LENGTH_SHORT).show();
-                    }
-                    else {
-                        if (accessTokenManager.getAccessToken() == null) {
+                    if (accessTokenManager.getAccessToken() == null) {
                             Toast.makeText(ProductViewActivity.this, "A kosárba helyezéshez be kell jelentkezned!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(ProductViewActivity.this, "A kosárhoz adás sikertelen volt, kérjük próbálja újra később!", Toast.LENGTH_SHORT).show();
-                        }
+                    } else {
+                        Toast.makeText(ProductViewActivity.this, "A kosárhoz adás sikertelen volt, kérjük próbálja újra később!", Toast.LENGTH_SHORT).show();
                     }
                 }
                 @Override

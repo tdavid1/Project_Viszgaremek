@@ -20,6 +20,7 @@ import com.example.project_kozos.R;
 import com.example.project_kozos.RetrofitClient;
 import com.example.project_kozos.RetrofitInterface;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.HashMap;
 
@@ -30,8 +31,8 @@ import retrofit2.Retrofit;
 
 public class LoginActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private EditText login_email;
-    private EditText login_password;
+    private TextInputEditText login_email;
+    private TextInputEditText login_password;
     private Button button;
     private RetrofitInterface retrofitInterface;
     private TextView login_message;
@@ -110,10 +111,9 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
                         startActivity(intent);
                         finish();
                     } else {
-                        login_message.setText(R.string.invalid_credentials);
+                        assert response.body() != null;
+                        login_message.setText(response.body().getErrorMessage());
                     }
-                } else if(response.code() == 400) {
-                    login_message.setText(R.string.invalid_email_or_password);
                 } else {
                     login_message.setText(String.format("%s%s", getString(R.string.unexpected_error), response.message()));
                 }

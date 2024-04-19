@@ -87,13 +87,13 @@ public class RegisterActivity extends AppCompatActivity implements NavigationVie
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                if(response.code()==201){
+                if(response.isSuccessful()){
                     signup_message.setText(R.string.successful_register);
                     signup_email.setText("");
                     signup_name.setText("");
                     signup_password.setText("");
                 }
-                else if(response.code() == 400){
+                else {
                     signup_message.setText("Ezzel az email címmel már regisztráltak");
                 }
             }

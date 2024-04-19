@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -87,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         AccessTokenManager accessTokenManager = new AccessTokenManager(MainActivity.this);
         if (item.getItemId() == R.id.nav_basket) {
-            Intent intent = new Intent(MainActivity.this , ProductBasketActivity.class);
+            Intent intent = new Intent(MainActivity.this , CartActivity.class);
             ProductinBasket[] productArray = productInBasketList.toArray(new ProductinBasket[0]);
             intent.putExtra("productFromMainToBasket",productArray);
             startActivity(intent);
@@ -102,6 +101,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             finish();
         } else if (item.getItemId() == R.id.nav_logout) {
             accessTokenManager.clearAccessToken();
+            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -157,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     call.enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                            if (response.code() == 201) {
+                            if (response.isSuccessful()) {
                                 Toast.makeText(MainActivity.this, "Sikeresen hozzáadta a terméket a kosárhoz", Toast.LENGTH_SHORT).show();
                             } else {
                                 if (accessTokenManager.getAccessToken() == null) {
@@ -253,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Retrofit retrofit = RetrofitClient.getClient();
         retrofitInterface = retrofit.create(RetrofitInterface.class);
         listView = findViewById(R.id.listview_main);
-        searchEditText = findViewById(R.id.Kereseset_eszkoz_editext);
+        searchEditText = findViewById(R.id.textInputSearchBar);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
@@ -269,6 +271,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,drawerLayout, toolbar,R.string.open_nav,R.string.close_nav);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-        new AccessTokenManager(MainActivity.this);
+        AccessTokenManager accessTokenManager = new AccessTokenManager(MainActivity.this);
+        navigationView.getMenu().clear();
+        if (accessTokenManager.getAccessToken() == null) {
+            navigationView.inflateMenu(R.menu.nav_menu_logged_out);
+        } else {
+            navigationView.inflateMenu(R.menu.nav_menu_logged_in);
+        }
     }
 }

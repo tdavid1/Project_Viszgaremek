@@ -9,9 +9,12 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 public interface RetrofitInterface {
@@ -30,7 +33,7 @@ public interface RetrofitInterface {
     @POST("/api/cart/add")
     Call<Void> executeAddCart(@Header("Authorization") String accessToken, @Body HashMap<String, Integer> map);
 
-    @POST("/api/cart/remove")
+    @PUT("/api/cart/remove")
     Call<Void> executeRemoveCart(@Header("Authorization") String accessToken, @Body HashMap<String, Integer> map);
 
     @GET("/api/cart/items")
@@ -39,8 +42,8 @@ public interface RetrofitInterface {
     @GET("/api/cart/total")
     Call<Integer> executeTotalPrice(@Header("Authorization") String accessToken);
 
-    @POST("/api/cart/remove-item")
-    Call<Void> executeDeleteItem(@Header("Authorization") String accessToken,@Body HashMap<String, Integer> map);
+    @HTTP(method = "DELETE", path = "/api/cart/remove-item", hasBody = true)
+    Call<Void> executeDeleteItem(@Header("Authorization") String accessToken, @Body HashMap<String, Integer> productIdMap);
 
     @POST("/api/order/new")
     Call<Void> executeOrder(@Header("Authorization") String accessToken,@Body HashMap<String, Object> map);

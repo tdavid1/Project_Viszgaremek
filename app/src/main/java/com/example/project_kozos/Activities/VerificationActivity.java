@@ -126,7 +126,7 @@ public class VerificationActivity extends AppCompatActivity {
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                if(response.code()==201){
+                if(response.isSuccessful()){
                     Toast.makeText(VerificationActivity.this, "Sikeresen hozzáadta a terméket a kosárhoz", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(VerificationActivity.this , MainActivity.class);
                     startActivity(intent);
