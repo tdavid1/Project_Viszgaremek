@@ -1,4 +1,4 @@
-package com.example.project_kozos;
+package com.example.project_kozos.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +22,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.project_kozos.AccessTokenManager;
+import com.example.project_kozos.Dtos.Product;
+import com.example.project_kozos.Dtos.ProductPictures;
+import com.example.project_kozos.Dtos.ProductinBasket;
+import com.example.project_kozos.R;
+import com.example.project_kozos.RetrofitClient;
+import com.example.project_kozos.RetrofitInterface;
 import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
@@ -34,18 +41,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawerLayout;
-    private Retrofit retrofit;
     private List<Product> products = new ArrayList<>();
     private RetrofitInterface retrofitInterface;
-    private TextView hibajelentes;
     private Button Search;
-    private EditText search_edit_text;
+    private EditText searchEditText;
     private ListView listView;
-    private List<ProductinBasket> productinBasketList = new ArrayList<>();
+    private final List<ProductinBasket> productInBasketList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(search_edit_text.toString().isEmpty()){
+                if(searchEditText.toString().isEmpty()){
                     GetAll();
                 } else {
                     Search_Result();
@@ -71,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         AccessTokenManager accessTokenManager = new AccessTokenManager(MainActivity.this);
         if(item.getItemId()==R.id.nav_basket){
             Intent intent = new Intent(MainActivity.this , ProductBasketActivity.class);
-            ProductinBasket[] productArray = productinBasketList.toArray(new ProductinBasket[productinBasketList.size()]);
+            ProductinBasket[] productArray = productInBasketList.toArray(new ProductinBasket[productInBasketList.size()]);
             intent.putExtra("productfrommaintobasket",productArray);
             startActivity(intent);
             finish();
@@ -102,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private class ProductsAdapter extends ArrayAdapter<Product> {
-        private List<Product> productList;
+        private final List<Product> productList;
 
         public ProductsAdapter(List<Product> products) {
             super(MainActivity.this, R.layout.list_adapter, products);
@@ -156,14 +160,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             }
                             @Override
                             public void onFailure(Call<Void> call, Throwable t) {
-                                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();;
+                                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
                 });
 
                 name.setText(prod.getProduct_name());
-                price.setText(String.valueOf(prod.getPrice()) + "Ft");
+                price.setText(prod.getPrice() + "Ft");
 
                 List<ProductPictures> productPicturesList = prod.getProductPictures();
                 if (productPicturesList != null && !productPicturesList.isEmpty()) {
@@ -213,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void Search_Result(){
         products.clear();
-        String Helper = search_edit_text.getText().toString();
+        String Helper = searchEditText.getText().toString();
         Call<List<Product>> call = retrofitInterface.executeSearchResault(Helper);
         call.enqueue(new Callback<List<Product>>() {
             @Override
@@ -243,15 +247,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void init(){
-        String baseUrl = NetworkConnection.getBackendUrl();
-        if (baseUrl == null) {
-            baseUrl = "http://fallbackurl.com";
-        }
-        retrofit = new Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create()).build();
+        Retrofit retrofit = RetrofitClient.getClient();
         retrofitInterface = retrofit.create(RetrofitInterface.class);
         listView = findViewById(R.id.listview_main);
         Search = findViewById(R.id.Kereses_button);
-        search_edit_text = findViewById(R.id.Kereseset_eszkoz_editext);
+        searchEditText = findViewById(R.id.Kereseset_eszkoz_editext);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

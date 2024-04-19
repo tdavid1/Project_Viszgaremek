@@ -1,4 +1,4 @@
-package com.example.project_kozos;
+package com.example.project_kozos.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,16 +13,17 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.Picasso;
+import com.example.project_kozos.AccessTokenManager;
+import com.example.project_kozos.Dtos.BasketProduct;
+import com.example.project_kozos.R;
+import com.example.project_kozos.RetrofitClient;
+import com.example.project_kozos.RetrofitInterface;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,14 +31,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ProductBasketActivity extends AppCompatActivity {
     private TextView basket_total_price;
-    private TextView basket_number;
     private Button order;
     private ListView basket_list;
-    private Retrofit retrofit;
     private List<BasketProduct> products = new ArrayList<>();
     private RetrofitInterface retrofitInterface;
     @Override
@@ -61,7 +59,7 @@ public class ProductBasketActivity extends AppCompatActivity {
         Call<List<BasketProduct>> call = retrofitInterface.executeAllinBasket("Bearer "+accessTokenManager.getAccessToken());
         call.enqueue(new Callback<List<BasketProduct>>() {
             @Override
-            public void onResponse(Call<List<BasketProduct>> call, Response<List<BasketProduct>> response) {
+            public void onResponse(@NonNull Call<List<BasketProduct>> call, @NonNull Response<List<BasketProduct>> response) {
                 if (response.isSuccessful()) {
                     products = response.body();
                     if (products != null && !products.isEmpty()) {
@@ -75,7 +73,7 @@ public class ProductBasketActivity extends AppCompatActivity {
                 }
             }
             @Override
-            public void onFailure(Call<List<BasketProduct>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<BasketProduct>> call, @NonNull Throwable t) {
                 Log.e("Error", "Failed to fetch products: " + t.getMessage());
             }
         });
@@ -85,11 +83,11 @@ public class ProductBasketActivity extends AppCompatActivity {
         Call<Integer> call = retrofitInterface.executeTotalPrice("Bearer "+accessTokenManager.getAccessToken());
         call.enqueue(new Callback<Integer>() {
             @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
+            public void onResponse(@NonNull Call<Integer> call, @NonNull Response<Integer> response) {
                 if (response.isSuccessful()) {
                     Integer helper = response.body();
                     if (helper != null) {
-                        basket_total_price.setText(String.valueOf(helper)+" Ft");
+                        basket_total_price.setText(helper +" Ft");
                     } else {
                         Log.e("Error", "No products found");
                     }
@@ -98,13 +96,13 @@ public class ProductBasketActivity extends AppCompatActivity {
                 }
             }
             @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
+            public void onFailure(@NonNull Call<Integer> call, @NonNull Throwable t) {
                 Log.e("Error", "Failed to fetch products: " + t.getMessage());
             }
         });
     }
     private class ProductsAdapter extends ArrayAdapter<BasketProduct> {
-        private List<BasketProduct> productList;
+        private final List<BasketProduct> productList;
         public ProductsAdapter(List<BasketProduct> products) {
             super(ProductBasketActivity.this, R.layout.list_adapter, products);
             this.productList = products;
@@ -136,18 +134,18 @@ public class ProductBasketActivity extends AppCompatActivity {
                         Call<Void> call = retrofitInterface.executeAddCart("Bearer "+accessTokenManager.getAccessToken(), map);
                         call.enqueue(new Callback<Void>() {
                             @Override
-                            public void onResponse(Call<Void> call, Response<Void> response) {
+                            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                                 if(response.code()==201){
                                     GetAll();
                                     Toast.makeText(ProductBasketActivity.this, "Sikeresen hozzáadta a terméket a kosárhoz", Toast.LENGTH_SHORT).show();
                                 }
-                                else if(response.code() != 201){
+                                else {
                                     Toast.makeText(ProductBasketActivity.this, String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                                 }
                             }
                             @Override
-                            public void onFailure(Call<Void> call, Throwable t) {
-                                Toast.makeText(ProductBasketActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();;
+                            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                                Toast.makeText(ProductBasketActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -165,18 +163,18 @@ public class ProductBasketActivity extends AppCompatActivity {
                         Call<Void> call = retrofitInterface.executeRemoveCart("Bearer "+accessTokenManager.getAccessToken(), map);
                         call.enqueue(new Callback<Void>() {
                             @Override
-                            public void onResponse(Call<Void> call, Response<Void> response) {
+                            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                                 if(response.code()==201){
                                     GetAll();
                                     Toast.makeText(ProductBasketActivity.this, "Sikeresen Kivonta a terméket a kosárhoz", Toast.LENGTH_SHORT).show();
                                 }
-                                else if(response.code() != 201){
+                                else {
                                     Toast.makeText(ProductBasketActivity.this, String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                                 }
                             }
                             @Override
-                            public void onFailure(Call<Void> call, Throwable t) {
-                                Toast.makeText(ProductBasketActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();;
+                            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                                Toast.makeText(ProductBasketActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -190,39 +188,35 @@ public class ProductBasketActivity extends AppCompatActivity {
                         Call<Void> call = retrofitInterface.executeDeleteItem("Bearer "+accessTokenManager.getAccessToken(), map);
                         call.enqueue(new Callback<Void>() {
                             @Override
-                            public void onResponse(Call<Void> call, Response<Void> response) {
+                            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                                 if(response.code()==201){
                                     GetAll();
                                     Toast.makeText(ProductBasketActivity.this, "Sikeresen Terméket a terméket a kosárból", Toast.LENGTH_SHORT).show();
                                 }
-                                else if(response.code() != 201){
+                                else {
                                     Toast.makeText(ProductBasketActivity.this, String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                                 }
                             }
                             @Override
-                            public void onFailure(Call<Void> call, Throwable t) {
-                                Toast.makeText(ProductBasketActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();;
+                            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                                Toast.makeText(ProductBasketActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
                 });
                 name.setText(prod.getProduct().getProduct_name());
-                price.setText(String.valueOf(prod.getProduct().getPrice())+" Ft");
+                price.setText(prod.getProduct().getPrice() +" Ft");
                 number.setText(String.valueOf(prod.getQuantity()));
             }
             return view;
         }
     }
     public void init(){
-        basket_number = findViewById(R.id.basket_total_price);
+        TextView basket_number = findViewById(R.id.basket_total_price);
         basket_total_price = findViewById(R.id.basket_total_price);
         order = findViewById(R.id.order);
         basket_list = findViewById(R.id.listview_basket);
-        String baseUrl = NetworkConnection.getBackendUrl();
-        if (baseUrl == null) {
-            baseUrl = "http://fallbackurl.com";
-        }
-        retrofit = new Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create()).build();
+        Retrofit retrofit = RetrofitClient.getClient();
         retrofitInterface = retrofit.create(RetrofitInterface.class);
     }
 }

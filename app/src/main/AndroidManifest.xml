@@ -16,22 +16,22 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".VerificationActivity"
+            android:name=".Activities.VerificationActivity"
             android:exported="false" />
         <activity
-            android:name=".ProductBasketActivity"
+            android:name=".Activities.ProductBasketActivity"
             android:exported="false" />
         <activity
-            android:name=".ProductViewActivity"
+            android:name=".Activities.ProductViewActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".Activities.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".Activities.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>

@@ -1,4 +1,4 @@
-package com.example.project_kozos;
+package com.example.project_kozos.Dtos;
 
 import java.io.Serializable;
 import java.util.ArrayList;

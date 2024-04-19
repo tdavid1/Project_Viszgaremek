@@ -1,4 +1,4 @@
-package com.example.project_kozos;
+package com.example.project_kozos.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -15,6 +15,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.project_kozos.R;
+import com.example.project_kozos.RetrofitClient;
+import com.example.project_kozos.RetrofitInterface;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.HashMap;
@@ -23,14 +26,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RegisterActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private EditText signup_email;
     private EditText signup_password;
     private EditText signup_name;
     private Button signupButton;
-    private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
     private TextView signup_message;
     private DrawerLayout drawerLayout;
@@ -91,7 +92,7 @@ public class RegisterActivity extends AppCompatActivity implements NavigationVie
         Call<Void> call = retrofitInterface.executeSignup(map);
         call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 signup_message.setText("siker");
                 if(response.code()==201){
                     signup_message.setText("Sikeres Regisztáció");
@@ -104,7 +105,7 @@ public class RegisterActivity extends AppCompatActivity implements NavigationVie
                 }
             }
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                 signup_message.setText(t.getMessage());
             }
         });
@@ -114,11 +115,7 @@ public class RegisterActivity extends AppCompatActivity implements NavigationVie
         signup_email = findViewById(R.id.user_email);
         signup_name = findViewById(R.id.user_name);
         signup_password=findViewById(R.id.password);
-        String baseUrl = NetworkConnection.getBackendUrl();
-        if (baseUrl == null) {
-            baseUrl = "http://fallbackurl.com";
-        }
-        retrofit = new Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create()).build();
+        Retrofit retrofit = RetrofitClient.getClient();
         retrofitInterface = retrofit.create(RetrofitInterface.class);
         signup_message = findViewById(R.id.signup_problem_message);
     }

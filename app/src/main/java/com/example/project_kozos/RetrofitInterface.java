@@ -1,15 +1,12 @@
 package com.example.project_kozos;
 
-import android.provider.SyncStateContract;
+import com.example.project_kozos.Dtos.BasketProduct;
+import com.example.project_kozos.Dtos.LoginResult;
+import com.example.project_kozos.Dtos.Product;
 
-import com.google.gson.JsonObject;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;

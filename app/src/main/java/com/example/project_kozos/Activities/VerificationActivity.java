@@ -1,9 +1,9 @@
-package com.example.project_kozos;
+package com.example.project_kozos.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -13,14 +13,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.project_kozos.AccessTokenManager;
+import com.example.project_kozos.Dtos.Address;
+import com.example.project_kozos.R;
+import com.example.project_kozos.RetrofitClient;
+import com.example.project_kozos.RetrofitInterface;
+
 import java.util.HashMap;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class VerificationActivity extends AppCompatActivity {
 
@@ -35,8 +39,6 @@ public class VerificationActivity extends AppCompatActivity {
     private LinearLayout linearLayout_data;
     private LinearLayout linearLayout_end;
     private EditText house_number;
-    private TextView order_place;
-    private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
     private boolean card = false;
     private Address address;
@@ -61,45 +63,40 @@ public class VerificationActivity extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                forwardcard();
+                forwardStep();
             }
         });
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                backwardcard();
+                backwardStep();
             }
         });
     }
-    public void forwardcard(){
-        if(card==false && elenorzes()){
+    public void forwardStep(){
+        if(!card && addressDataCheck()){
             card =true;
             rewrite();
-        } else if (card==true && elenorzes()) {
+        } else if (card && addressDataCheck()) {
             linearLayout_end.setVisibility(View.VISIBLE);
             linearLayout_data.setVisibility(View.GONE);
         }
     }
-    public void backwardcard(){
-        if(card==false){
+    public void backwardStep(){
+        if(!card){
             Toast.makeText(this, "Nem lehet visszább menni", Toast.LENGTH_SHORT).show();
         }
-        else if (card== true) {
+        else {
             card = false;
             fromCard();
         }
     }
-    public boolean elenorzes(){
-        if(country.getText().toString().equals("") ||
-                state.getText().toString().equals("") ||
-                city.getText().toString().equals("") ||
-                street.getText().toString().equals("") ||
-                house_number.getText().toString().equals("")){
-            return false;
-        }
-        else{
-            return true;
-        }
+    public boolean addressDataCheck(){
+        return !country.getText().toString().isEmpty() &&
+                !state.getText().toString().isEmpty() &&
+                !city.getText().toString().isEmpty() &&
+                !street.getText().toString().isEmpty() &&
+                !house_number.getText().toString().isEmpty();
     }
     public void rewrite(){
         if(address == null){
@@ -146,7 +143,7 @@ public class VerificationActivity extends AppCompatActivity {
         Call<Void> call = retrofitInterface.executeOrder("Bearer "+accessTokenManager.getAccessToken(), map);
         call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 if(response.code()==201){
                     Toast.makeText(VerificationActivity.this, "Sikeresen hozzáadta a terméket a kosárhoz", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(VerificationActivity.this , MainActivity.class);
@@ -154,22 +151,18 @@ public class VerificationActivity extends AppCompatActivity {
                     finish();
 
                 }
-                else if(response.code() != 201){
+                else {
                     Toast.makeText(VerificationActivity.this, String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                 Toast.makeText(VerificationActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();;
             }
         });
     }
     public void init(){
-        String baseUrl = NetworkConnection.getBackendUrl();
-        if (baseUrl == null) {
-            baseUrl = "http://fallbackurl.com";
-        }
-        retrofit = new Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create()).build();
+        Retrofit retrofit = RetrofitClient.getClient();
         retrofitInterface = retrofit.create(RetrofitInterface.class);
         next = findViewById(R.id.next);
         back = findViewById(R.id.back);
@@ -182,6 +175,6 @@ public class VerificationActivity extends AppCompatActivity {
         street = findViewById(R.id.streat);
         city = findViewById(R.id.city);
         house_number = findViewById(R.id.house_number);
-        order_place = findViewById(R.id.order_place);
+        TextView order_place = findViewById(R.id.order_place);
     }
 }

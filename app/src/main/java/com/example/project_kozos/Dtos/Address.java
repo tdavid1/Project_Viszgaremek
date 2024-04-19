@@ -1,4 +1,4 @@
-package com.example.project_kozos;
+package com.example.project_kozos.Dtos;
 
 public class Address {
     private String country;

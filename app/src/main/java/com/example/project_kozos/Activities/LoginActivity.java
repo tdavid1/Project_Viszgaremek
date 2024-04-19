@@ -1,4 +1,4 @@
-package com.example.project_kozos;
+package com.example.project_kozos.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -9,13 +9,17 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.project_kozos.AccessTokenManager;
+import com.example.project_kozos.Dtos.LoginResult;
+import com.example.project_kozos.R;
+import com.example.project_kozos.RetrofitClient;
+import com.example.project_kozos.RetrofitInterface;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.HashMap;
@@ -24,14 +28,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private EditText login_email;
     private EditText login_password;
     private Button button;
-    private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
     private TextView login_message;
     private DrawerLayout drawerLayout;
@@ -57,7 +59,7 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                handleLoginDialoge();
+                handleLoginDialogue();
             }
         });
     }
@@ -89,15 +91,11 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
         login_email = findViewById(R.id.login_email);
         button = findViewById(R.id.login_button);
         login_password= findViewById(R.id.login_password);
-        String baseUrl = NetworkConnection.getBackendUrl();
-        if (baseUrl == null) {
-            baseUrl = "http://fallbackurl.com";
-        }
-        retrofit = new Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create()).build();
+        Retrofit retrofit = RetrofitClient.getClient();
         retrofitInterface = retrofit.create(RetrofitInterface.class);
         login_message = findViewById(R.id.login_problem_message);
     }
-    private void handleLoginDialoge() {
+    private void handleLoginDialogue() {
         HashMap<String, String> map = new HashMap<>();
         map.put("email", login_email.getText().toString());
         map.put("password", login_password.getText().toString());
@@ -106,7 +104,7 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
 
         call.enqueue(new Callback<LoginResult>() {
             @Override
-            public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
+            public void onResponse(@NonNull Call<LoginResult> call, @NonNull Response<LoginResult> response) {
                 if(response.isSuccessful()) {
                     LoginResult result = response.body();
                     if (result != null && result.getAccessToken() != null) {
@@ -138,7 +136,7 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
                 }
             }
             @Override
-            public void onFailure(Call<LoginResult> call, Throwable t) {
+            public void onFailure(@NonNull Call<LoginResult> call, @NonNull Throwable t) {
                 login_message.setText(t.getMessage());
             }
         });

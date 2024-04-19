@@ -1,14 +1,11 @@
-package com.example.project_kozos;
+package com.example.project_kozos.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -16,6 +13,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.project_kozos.AccessTokenManager;
+import com.example.project_kozos.Dtos.Product;
+import com.example.project_kozos.Dtos.ProductPictures;
+import com.example.project_kozos.Dtos.ProductinBasket;
+import com.example.project_kozos.R;
+import com.example.project_kozos.RetrofitClient;
+import com.example.project_kozos.RetrofitInterface;
 import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
@@ -24,7 +28,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ProductViewActivity extends AppCompatActivity {
     private TextView product_name;
@@ -33,13 +36,10 @@ public class ProductViewActivity extends AppCompatActivity {
     private ImageView product_picture;
     private ImageButton product_minus;
     private ImageButton product_plus;
-    private TextView product_number;
     private ImageView add_basket;
     private TextView product_price;
-    private ProductinBasket productinBasket;
     private TextView product_description;
     private Product product;
-    private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
     private int what_picture = 0;
     private Button return_button;
@@ -118,16 +118,16 @@ public class ProductViewActivity extends AppCompatActivity {
                 Call<Void> call = retrofitInterface.executeAddCart("Bearer "+accessTokenManager.getAccessToken(), map);
                 call.enqueue(new Callback<Void>() {
                     @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
+                    public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                         if(response.code()==201){
                             Toast.makeText(ProductViewActivity.this, "Sikeresen hozzáadta a terméket a kosárhoz", Toast.LENGTH_SHORT).show();
                         }
-                        else if(response.code() != 201){
+                        else {
                             Toast.makeText(ProductViewActivity.this, String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                         }
                     }
                     @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
+                    public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                         Toast.makeText(ProductViewActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();;
                     }
                 });
@@ -137,24 +137,20 @@ public class ProductViewActivity extends AppCompatActivity {
     public void init(){
         product_name = findViewById(R.id.product_name);
         Left_arrow = findViewById(R.id.Left_arrow);
-        String baseUrl = NetworkConnection.getBackendUrl();
-        if (baseUrl == null) {
-            baseUrl = "http://fallbackurl.com";
-        }
-        retrofit = new Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create()).build();
+        Retrofit retrofit = RetrofitClient.getClient();
         retrofitInterface = retrofit.create(RetrofitInterface.class);
         Right_arrow = findViewById(R.id.Right_arrow);
         product_picture = findViewById(R.id.product_picture);
         product_minus = findViewById(R.id.product_minus);
         product_plus = findViewById(R.id.product_plus);
-        product_number = findViewById(R.id.product_number);
+        TextView product_number = findViewById(R.id.product_number);
         return_button = findViewById(R.id.return_button);
         add_basket = findViewById(R.id.add_basket);
         product_price = findViewById(R.id.product_price);
         product_description = findViewById(R.id.product_description);
         product_description.setMovementMethod(new ScrollingMovementMethod());
         number =findViewById(R.id.product_number);
-        productinBasket = new ProductinBasket(product,0);
+        ProductinBasket productinBasket = new ProductinBasket(product, 0);
         fill();
     }
     public void fill(){
