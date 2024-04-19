@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <!-- TODO: DESIGN!!! -->
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            app:cardElevation="5dp"
+            android:theme="@style/Theme.MaterialComponents.Light"
+            app:cardCornerRadius="10dp">
+
+            <ImageView
+                android:layout_height="130dp"
+                android:layout_width="130dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/loading"
+                android:id="@+id/imageViewProductImageInCart"
+                android:contentDescription="@string/image_for_product" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="230dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/product"
+                    android:scrollbars="vertical"
+                    android:textSize="22sp"
+                    android:id="@+id/textViewProductNameInCart"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/product_price"
+                    android:textSize="20sp"
+                    android:id="@+id/textViewProductPriceInCart" />
+
+                <LinearLayout
+                    android:layout_marginTop="40dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="start|center"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/productCartMinus"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/custom_btn_remove"
+                        app:backgroundTint="@color/blue"/>
+
+                    <TextView
+                        android:layout_width="45dp"
+                        android:layout_height="50dp"
+                        android:text="1"
+                        android:textAlignment="center"
+                        android:textSize="35sp"
+                        android:textColor="@color/grey"
+                        android:id="@+id/productCartQuantity"/>
+
+                    <Button
+                        android:id="@+id/productCartPlus"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/custom_btn_add"
+                        app:backgroundTint="@color/blue"/>
+
+                    <Button
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:background="@drawable/trash_bin"
+                        android:id="@+id/productCartDelete"
+                        app:backgroundTint="@color/black"/>
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+
+<!--
+<LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/basket_name"
+                android:gravity="center"
+                android:textSize="25sp"
+                android:layout_marginRight="2dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/basket_price"
+                android:text="10Ft"
+                android:textSize="25sp"
+                android:layout_marginEnd="10dp"/>
+        </LinearLayout>
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/basket_minusz"
+                android:text="-"
+                android:textSize="25dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/basket_product_number"
+                android:text="1"
+                android:textSize="25sp"
+                android:layout_marginEnd="10dp"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/basket_plusz"
+                android:text="+"
+                android:textSize="25dp"/>
+            <ImageButton
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:src="@drawable/remove_shopping_cart"
+                app:backgroundTint="@color/white"
+                android:id="@+id/basket_trash"/>
+        </LinearLayout>
+-->

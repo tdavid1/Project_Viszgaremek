@@ -9,23 +9,19 @@
         <item
             android:icon="@drawable/home"
             android:id="@+id/nav_home"
-            android:title="Fő oldal"/>
+            android:title="@string/main_nav"/>
         <item
             android:icon="@drawable/basket_icon"
             android:id="@+id/nav_basket"
-            android:title="Kosár"/>
+            android:title="@string/cart_nav"/>
         <item
-            android:icon="@drawable/register"
-            android:id="@+id/nav_register"
-            android:title="Regisztráció"/>
-        <item
-            android:icon="@drawable/login_icon"
-            android:id="@+id/nav_login"
-            android:title="Belépés"/>
+            android:icon="@drawable/person_icon"
+            android:id="@+id/nav_options"
+            android:title="@string/profile_nav"/>
         <item
             android:icon="@drawable/logout"
             android:id="@+id/nav_logout"
-            android:title="Kijelenkezés"
+            android:title="@string/logout_nav"
             />
     </group>
 </menu>

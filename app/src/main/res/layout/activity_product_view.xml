@@ -18,7 +18,8 @@
         android:layout_height="wrap_content"
         android:text="Product Name"
         android:textAlignment="center"
-        android:textSize="30dp"
+        android:textSize="30sp"
+        android:textColor="@color/grey"
         android:fontFamily="sans-serif-medium"
         android:id="@+id/product_name"/>
     <RelativeLayout
@@ -57,39 +58,38 @@
         android:orientation="horizontal"
         android:gravity="center">
         <Button
-            android:layout_width="65dp"
-            android:layout_height="70dp"
-            android:text="-"
-            android:textSize="30sp"
-            android:textAlignment="center"
             android:id="@+id/product_minus"
-            app:backgroundTint="@color/blue"
-            app:cornerRadius="30dp"/>
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/custom_btn_remove"
+            app:backgroundTint="@color/blue"/>
         <TextView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:inputType="number"
+            android:layout_width="45dp"
+            android:layout_height="50dp"
             android:text="1"
             android:textAlignment="center"
-            android:textSize="20dp"
+            android:textSize="35sp"
+            android:textColor="@color/grey"
             android:id="@+id/product_number"
             />
-        <ImageButton
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/baseline_exposure_plus_1_24"
-            android:id="@+id/product_plus"/>
+        <Button
+            android:id="@+id/product_plus"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/custom_btn_add"
+            app:backgroundTint="@color/blue"/>
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/cart"
             android:layout_marginEnd="10dp"
             android:id="@+id/add_basket"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25dp"
+            android:textSize="25sp"
             android:text="Product Price"
+            android:textColor="@color/grey"
             android:id="@+id/product_price"
             />
     </LinearLayout>
@@ -100,32 +100,30 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="25dp"
+            android:textSize="25sp"
+            android:layout_marginStart="5dp"
             android:text="Leírás:"
+            android:textColor="@color/grey"
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
-            android:padding="0dp"
-            android:textSize="15dp"
+            android:textSize="15sp"
+            android:textColor="@color/grey"
+            android:paddingLeft="10dp"
             android:scrollbars="vertical"
             android:text="Product Description"
             android:id="@+id/product_description"/>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_gravity="center"
             app:backgroundTint="@color/blue"
-            android:text="Fő Menű"
+            android:text="Vissza"
             android:id="@+id/return_button"/>
-    </LinearLayout>
 
 </LinearLayout>
 </ScrollView>

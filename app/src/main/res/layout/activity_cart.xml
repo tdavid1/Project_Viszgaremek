@@ -5,37 +5,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Activities.ProductBasketActivity">
+    tools:context=".Activities.CartActivity">
 
-    <!-- TODO: DESIGN!!! -->
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:layout_weight="1"
+        android:id="@+id/listview_basket"
+        tools:listitem="@layout/cart_adapter"
+        android:scrollbarStyle="outsideOverlay"
+        android:divider="@null"
+        android:scrollbars="vertical"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Teljes Ár:"
-            android:textSize="20dp"/>
+            android:textSize="20sp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/basket_total_price"
-            android:text="20ft"
-            android:textSize="20dp"/>
+            android:text="@string/product_price"
+            android:textSize="20sp"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/order"
             android:text="Megrendelés"/>
     </LinearLayout>
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/listview_basket"
-        tools:listitem="@layout/basket_adapter"
-        android:scrollbarStyle="outsideOverlay"
-        android:scrollbars="vertical"
-        />
 
 </LinearLayout>

@@ -73,6 +73,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textPassword"
                     android:hint="@string/password"
                     android:textSize="30sp"
                     android:id="@+id/login_password"/>
@@ -108,7 +109,7 @@
         android:id="@+id/login_nav_view"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/nav_menu"
+        app:menu="@menu/nav_menu_logged_out"
         app:itemIconTint="@color/blue"
         app:itemTextColor="@color/blue"
         android:background="@color/white"
