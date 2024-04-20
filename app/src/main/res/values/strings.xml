@@ -25,6 +25,7 @@
     <string name="cart_nav">Kosár</string>
     <string name="profile_nav">Fiók</string>
     <string name="logout_nav">Kijelentkezés</string>
+    <string name="register_error">Ezzel az email címmel már regisztráltak</string>
 
 
 </resources>

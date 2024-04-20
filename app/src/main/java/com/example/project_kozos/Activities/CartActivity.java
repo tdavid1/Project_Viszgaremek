@@ -2,17 +2,21 @@ package com.example.project_kozos.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,36 +28,80 @@ import com.example.project_kozos.Dtos.ProductPictures;
 import com.example.project_kozos.R;
 import com.example.project_kozos.RetrofitClient;
 import com.example.project_kozos.RetrofitInterface;
+import com.google.android.material.navigation.NavigationView;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class CartActivity extends AppCompatActivity {
+public class CartActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private TextView basket_total_price;
     private Button order;
     private ListView basket_list;
     private List<BasketProduct> products = new ArrayList<>();
     private RetrofitInterface retrofitInterface;
+    private DrawerLayout drawerLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
         init();
         GetAll();
+        setupNavigationView();
         order.setOnClickListener(v -> {
             Intent intent = new Intent(CartActivity.this , VerificationActivity.class);
             startActivity(intent);
             finish();
         });
     }
+
+    private void setupNavigationView() {
+        drawerLayout = findViewById(R.id.cart_drawer_layout);
+        NavigationView navigationView = findViewById(R.id.cart_nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        Toolbar toolbar = findViewById(R.id.cart_toolbar);
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setTitle("");
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav, R.string.close_nav);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            drawerLayout.openDrawer(GravityCompat.START);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        AccessTokenManager accessTokenManager = new AccessTokenManager(CartActivity.this);
+        if (item.getItemId() == R.id.nav_home) {
+            Intent intent = new Intent(CartActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        } else if (item.getItemId() == R.id.nav_logout) {
+            accessTokenManager.clearAccessToken();
+            Intent intent = new Intent(CartActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
     public void GetAll(){
         products.clear();
         AccessTokenManager accessTokenManager = new AccessTokenManager(CartActivity.this);
