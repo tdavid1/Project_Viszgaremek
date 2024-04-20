@@ -94,7 +94,7 @@ public class RegisterActivity extends AppCompatActivity implements NavigationVie
                     signup_password.setText("");
                 }
                 else {
-                    signup_message.setText("Ezzel az email címmel már regisztráltak");
+                    signup_message.setText(R.string.register_error);
                 }
             }
             @Override

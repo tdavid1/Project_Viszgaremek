@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.project_kozos.AccessTokenManager;
@@ -23,6 +22,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
 
         Toolbar toolbar = findViewById(R.id.login_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("");
         drawerLayout = findViewById(R.id.login_drawer_layout);
         NavigationView navigationView = findViewById(R.id.login_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -92,8 +92,8 @@ public class LoginActivity extends AppCompatActivity implements NavigationView.O
     }
     private void handleLoginDialogue() {
         HashMap<String, String> map = new HashMap<>();
-        map.put("email", login_email.getText().toString());
-        map.put("password", login_password.getText().toString());
+        map.put("email", Objects.requireNonNull(login_email.getText()).toString());
+        map.put("password", Objects.requireNonNull(login_password.getText()).toString());
 
         Call<LoginResult> call = retrofitInterface.executeLogin(map);
 

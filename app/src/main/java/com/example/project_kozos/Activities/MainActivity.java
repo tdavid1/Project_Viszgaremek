@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -40,6 +39,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -258,13 +258,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         searchEditText = findViewById(R.id.textInputSearchBar);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
-        for (int i = 0; i < toolbar.getChildCount(); i++) {
-            if(toolbar.getChildAt(i) instanceof ImageButton){
-                toolbar.getChildAt(i).setScaleX(1.5f);
-                toolbar.getChildAt(i).setScaleY(1.5f);
-            }
-        }
+        Objects.requireNonNull(getSupportActionBar()).setTitle("");
         drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
